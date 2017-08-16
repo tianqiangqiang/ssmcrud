@@ -12,4 +12,7 @@
     <typeAliases>
         <package name="cn.tqq.ssm.entity"></package>
     </typeAliases>
+    <plugins>
+        <plugin interceptor="com.github.pagehelper.PageInterceptor"></plugin>
+    </plugins>
 </configuration>
