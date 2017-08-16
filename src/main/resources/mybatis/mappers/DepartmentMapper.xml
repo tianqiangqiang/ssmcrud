@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.tqq.ssm.mapper.DepartmentMapper">
+
+    <insert id="addDepartment" parameterType="Department">
+        insert into department (dept_name) values (#{deptName})
+    </insert>
+    
+    <insert id="batchAddDepartment" parameterType="Department">
+        insert into department (dept_name) values
+          <foreach collection="list" item="department" separator=",">
+              (#{department.deptName})
+          </foreach>
+    </insert>
+
+    <delete id="deleteDepartmentById" parameterType="Integer">
+        DELETE FROM department WHERE dept_id = #{id}
+    </delete>
+
+    <delete id="deleteDepartmentByIds" parameterType="Integer">
+        DELETE FROM department WHERE dept_id IN
+        <foreach collection="list" item="id" separator="," open="(" close=")">
+          #{id}
+        </foreach>
+    </delete>
+
+    <delete id="deleteAllDepartment">
+        DELETE FROM department
+    </delete>
+
+    <update id="updateDepartment" parameterType="Department">
+        update department set dept_name = #{deptName} where dept_id = #{deptId}
+    </update>
+
+    <resultMap id="deptMap" type="Department">
+        <id column="dept_id" property="deptId"></id>
+        <result column="dept_name" property="deptName"></result>
+        <collection property="employees" select="cn.tqq.ssm.mapper.EmployeeMapper.getEmployeeByDeptId" column="dept_id"></collection>
+    </resultMap>
+    <select id="getDepartmentById" parameterType="Integer" resultMap="deptMap">
+        SELECT * FROM department WHERE dept_id = #{deptId}
+    </select>
+
+</mapper>
