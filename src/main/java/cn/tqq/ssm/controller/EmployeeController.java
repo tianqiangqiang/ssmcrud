@@ -1,6 +1,7 @@
 package cn.tqq.ssm.controller;
 
 import cn.tqq.ssm.entity.Employee;
+import cn.tqq.ssm.entity.GenericInfo;
 import cn.tqq.ssm.service.EmployeeService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -21,6 +23,15 @@ public class EmployeeController {
 
     @Autowired
     private EmployeeService employeeService;
+
+    @RequestMapping(value = "/getAllEmpWithJson")
+    @ResponseBody
+    public GenericInfo getAllEmpWithJson(@RequestParam(value = "pageNumber") Integer pageNumber) {
+        PageHelper.startPage(pageNumber, 5);
+        List<Employee> employees = employeeService.getAllEmployee();
+        PageInfo<Employee> pageInfo = new PageInfo<>(employees, 5);
+        return GenericInfo.success().add("pageInfo", pageInfo);
+    }
 
     @RequestMapping(value = "/listAllEmp")
     public String listAllEmp(@RequestParam(value = "pageNumber", defaultValue = "1") Integer pageNumber, Model model) {
