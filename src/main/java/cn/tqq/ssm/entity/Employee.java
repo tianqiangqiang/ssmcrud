@@ -10,7 +10,7 @@ public class Employee {
 
     private Integer empId;
     private String empName;
-    private char gender;
+    private String gender;
     private String email;
     private Date hiredate;
     private Integer deptId;
@@ -19,7 +19,7 @@ public class Employee {
     public Employee() {
     }
 
-    public Employee(Integer empId, String empName, char gender, String email, Date hiredate, Integer deptId, Department department) {
+    public Employee(Integer empId, String empName, String gender, String email, Date hiredate, Integer deptId, Department department) {
         this.empId = empId;
         this.empName = empName;
         this.gender = gender;
@@ -45,11 +45,11 @@ public class Employee {
         this.empName = empName;
     }
 
-    public char getGender() {
+    public String getGender() {
         return gender;
     }
 
-    public void setGender(char gender) {
+    public void setGender(String gender) {
         this.gender = gender;
     }
 
@@ -90,7 +90,7 @@ public class Employee {
         return "Employee{" +
                 "empId=" + empId +
                 ", empName='" + empName + '\'' +
-                ", gender=" + gender +
+                ", gender='" + gender + '\'' +
                 ", email='" + email + '\'' +
                 ", hiredate=" + hiredate +
                 ", deptId=" + deptId +
