@@ -114,4 +114,16 @@ public class MapperTest {
         }
     }
 
+    @Test
+    public void test9() {
+        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring/applicationContext.xml");
+        DepartmentMapper departmentMapper = applicationContext.getBean(DepartmentMapper.class);
+        List<Department> departments = departmentMapper.getAllDepartment();
+        if (departments != null && departments.size() > 0) {
+            for (Department department : departments) {
+                System.out.println(department);
+            }
+        }
+    }
+
 }

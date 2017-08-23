@@ -19,6 +19,7 @@ import java.util.List;
  * Date: 2017/08/15 19:47
  */
 @Controller
+@RequestMapping(value = "/employee")
 public class EmployeeController {
 
     @Autowired

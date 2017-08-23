@@ -26,4 +26,6 @@ public interface DepartmentMapper {
 
     public abstract Department getDepartmentById(Integer id);
 
+    public abstract List<Department> getAllDepartment();
+
 }

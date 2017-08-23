@@ -7,12 +7,12 @@
     <insert id="addDepartment" parameterType="Department">
         insert into department (dept_name) values (#{deptName})
     </insert>
-    
+
     <insert id="batchAddDepartment" parameterType="Department">
         insert into department (dept_name) values
-          <foreach collection="list" item="department" separator=",">
-              (#{department.deptName})
-          </foreach>
+        <foreach collection="list" item="department" separator=",">
+            (#{department.deptName})
+        </foreach>
     </insert>
 
     <delete id="deleteDepartmentById" parameterType="Integer">
@@ -22,7 +22,7 @@
     <delete id="deleteDepartmentByIds" parameterType="Integer">
         DELETE FROM department WHERE dept_id IN
         <foreach collection="list" item="id" separator="," open="(" close=")">
-          #{id}
+            #{id}
         </foreach>
     </delete>
 
@@ -37,10 +37,15 @@
     <resultMap id="deptMap" type="Department">
         <id column="dept_id" property="deptId"></id>
         <result column="dept_name" property="deptName"></result>
-        <collection property="employees" select="cn.tqq.ssm.mapper.EmployeeMapper.getEmployeeByDeptId" column="dept_id"></collection>
+        <collection property="employees" select="cn.tqq.ssm.mapper.EmployeeMapper.getEmployeeByDeptId"
+                    column="dept_id"></collection>
     </resultMap>
     <select id="getDepartmentById" parameterType="Integer" resultMap="deptMap">
         SELECT * FROM department WHERE dept_id = #{deptId}
+    </select>
+
+    <select id="getAllDepartment" resultType="cn.tqq.ssm.entity.Department">
+        SELECT * FROM department
     </select>
 
 </mapper>

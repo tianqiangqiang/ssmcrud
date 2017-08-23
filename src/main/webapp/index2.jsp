@@ -11,16 +11,52 @@
 <head>
     <title>All Employee</title>
     <link href="${ctx}/static/bootstrap/css/bootstrap.css" rel="stylesheet">
-    <script type="text/javascript" src="${ctx}/static/js/jquery-3.2.1.js"></script>
+    <link href="${ctx}/static/bootstrap/css/bootstrap-datetimepicker.css" rel="stylesheet">
+    <script type="text/javascript" src="${ctx}/static/js/jquery/jquery-3.2.1.js"></script>
     <script src="${ctx}/static/bootstrap/js/bootstrap.js"></script>
+    <script src="${ctx}/static/bootstrap/js/bootstrap-datetimepicker.js"></script>
+    <script src="${ctx}/static/bootstrap/js/bootstrap-datetimepicker.zh-CN.js"></script>
     <script type="text/javascript">
         $(function () {
             toPage(1);
+
+            $(".form_datetime").datetimepicker({
+                weekStart: 0,
+                todayBtn: 'linked',
+                autoclose: true,
+                todayHighlight: true,
+                startView: 2,
+                minView: 'month',
+                language: 'zh-CN',
+                format: 'yyyy-mm-dd',
+                forceParse: 0
+            });
+
+            $("#emp_add").on("click", function () {
+
+                $.ajax({
+                    url: "${ctx}/department/getAllDept",
+                    type: "GET",
+                    success: function (result) {
+                        $("#inputDept").empty();
+                        $.each(result.data.departments, function (index, item) {
+                            $("#inputDept").append("<option value='" + item.deptId + "'>" + item.deptName + "</option>");
+                        });
+                    }
+                });
+
+                $("#empAdd").modal({
+                    backdrop: 'static',
+                    keyboard: false
+                });
+
+            });
+
         });
 
         function toPage(pageNumber) {
             $.ajax({
-                url: "${ctx}/getAllEmpWithJson?pageNumber="+pageNumber,
+                url: "${ctx}/employee/getAllEmpWithJson?pageNumber=" + pageNumber,
                 type: "GET",
                 success: function (result) {
                     buildEmpTable(result);
@@ -59,25 +95,86 @@
             if (result.data.pageInfo.pageNum == "1") {
                 addItem += "<li class=\"disabled\"><span>首页<span class=\"sr-only\">(current)</span></span></li><li class=\"disabled\"><span><span aria-hidden=\"true\">&laquo;</span></span></li>";
             } else {
-                addItem += "<li><a onclick='toPage("+1+")'>首页</a></li><li><a aria-label=\"Previous\" onclick='toPage("+(result.data.pageInfo.pageNum-1)+")'><span aria-hidden=\"true\">&laquo;</span></a></li>";
+                addItem += "<li><a onclick='toPage(" + 1 + ")'>首页</a></li><li><a aria-label=\"Previous\" onclick='toPage(" + (result.data.pageInfo.pageNum - 1) + ")'><span aria-hidden=\"true\">&laquo;</span></a></li>";
             }
             $.each(result.data.pageInfo.navigatepageNums, function (index, item) {
                 if (item == result.data.pageInfo.pageNum) {
                     addItem += "<li class='active'><span>" + item + "<span class='sr-only'>(current)</span></span></li>";
                 } else {
-                    addItem += "<li><a onclick='toPage("+item+")'>" + item + "</a></li>";
+                    addItem += "<li><a onclick='toPage(" + item + ")'>" + item + "</a></li>";
                 }
             });
             if (result.data.pageInfo.pageNum == result.data.pageInfo.pages) {
                 addItem += "<li class=\"disabled\"><span><span aria-hidden=\"true\">&raquo;</span></span></li><li class=\"disabled\"><span>末页<span class=\"sr-only\">(current)</span></span></li>";
             } else {
-                addItem += "<li><a aria-label=\"Previous\" onclick='toPage("+(result.data.pageInfo.pageNum+1)+")'><span aria-hidden=\"true\">&raquo;</span></a></li><li><a onclick='toPage("+result.data.pageInfo.pages+")'>末页</a></li>";
+                addItem += "<li><a aria-label=\"Previous\" onclick='toPage(" + (result.data.pageInfo.pageNum + 1) + ")'><span aria-hidden=\"true\">&raquo;</span></a></li><li><a onclick='toPage(" + result.data.pageInfo.pages + ")'>末页</a></li>";
             }
             pagination.append(addItem);
         }
     </script>
 </head>
 <body>
+<%--员工添加--%>
+<div class="modal fade" id="empAdd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">Add Employee</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label for="inputEmpName" class="col-sm-2 control-label">Name</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="empName" class="form-control" id="inputEmpName"
+                                   placeholder="EmpName">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Gender</label>
+                        <div class="col-sm-10">
+                            <label class="radio-inline">
+                                <input type="radio" name="gender" id="inlineRadio1" value="男" checked="checked"> 男
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="gender" id="inlineRadio2" value="女"> 女
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputEmail" class="col-sm-2 control-label">Email</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="email" class="form-control" id="inputEmail" placeholder="Email">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">HireDate</label>
+                        <div class="col-sm-10">
+                            <div class="input-group date form_datetime">
+                                <input class="form-control" type="text" name="hiredate" readonly="readonly">
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputDept" class="col-sm-2 control-label">Department</label>
+                        <div class="col-sm-10">
+                            <select class="form-control" id="inputDept" name="deptId"></select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary">Save</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="container">
     <div class="row">
         <div class="col-md-12">
@@ -86,8 +183,8 @@
     </div>
     <div class="row">
         <div class="col-md-4 col-md-offset-8">
-            <button class="btn btn-primary">新增</button>
-            <button class="btn btn-danger">删除</button>
+            <button class="btn btn-primary" id="emp_add">新增</button>
+            <button class="btn btn-danger" id="emp_delete">删除</button>
         </div>
     </div>
     <br>
@@ -122,71 +219,5 @@
         </div>
     </div>
 </div>
-
-<%--<script type="text/javascript">
-    $(function () {
-        toPage(1);
-    });
-
-    function toPage(pageNumber) {
-        $.ajax({
-            url: "${ctx}/getAllEmpWithJson",
-            data: pageNumber,
-            type: "GET",
-            success: function (result) {
-                buildEmpTable(result);
-                buildPageInfo(result);
-                buildPageBar(result);
-            }
-        });
-    }
-
-    function buildEmpTable(result) {
-        $("#empData").empty();
-        var emps = result.data.pageInfo.list;
-        $.each(emps, function (index, item) {
-            var empIdTd = $("<td></td>").append(item.empId);
-            var empNameTd = $("<td></td>").append(item.empName);
-            var empGenderTd = $("<td></td>").append(item.gender);
-            var empEmailTd = $("<td></td>").append(item.email);
-            var empHiredateTd = $("<td></td>").append(item.hiredate);
-            var empDeptTd = $("<td></td>").append(item.department.deptName);
-            var operationTd = $("<td></td>").append('<button class="btn btn-primary btn-xs">编辑</button>&nbsp;<button class="btn btn-danger btn-xs">删除</button>');
-            $("<tr></tr>").append(empIdTd).append(empNameTd).append(empGenderTd).append(empEmailTd).append(empHiredateTd).append(empDeptTd).append(operationTd).appendTo($("#empData"));
-        });
-    }
-
-    function buildPageInfo(result) {
-        var pageInfo = result.data.pageInfo;
-        $("#currentPage").html(pageInfo.pageNum);
-        $("#totalPage").html(pageInfo.pages);
-        $("#totalRecord").html(pageInfo.total);
-    }
-
-    function buildPageBar(result) {
-        var pagination = $(".pagination");
-        pagination.empty();
-        var addItem = "";
-        if (result.data.pageInfo.pageNum == "1") {
-            addItem += "<li class=\"disabled\"><span>首页<span class=\"sr-only\">(current)</span></span></li><li class=\"disabled\"><span><span aria-hidden=\"true\">&laquo;</span></span></li>";
-        } else {
-            addItem += "<li><a>首页</a></li><li><a aria-label=\"Previous\"><span aria-hidden=\"true\">&laquo;</span></a></li>";
-        }
-        $.each(result.data.pageInfo.navigatepageNums, function (index, item) {
-            if (item == result.data.pageInfo.pageNum) {
-                addItem += "<li class='active'><span>" + item + "<span class='sr-only'>(current)</span></span></li>";
-            } else {
-                addItem += "<li><a>" + item + "</a></li>";
-            }
-        });
-        if (result.data.pageInfo.pageNum == result.data.pageInfo.pages) {
-            addItem += "<li class=\"disabled\"><span><span aria-hidden=\"true\">&raquo;</span></span></li><li class=\"disabled\"><span>末页<span class=\"sr-only\">(current)</span></span></li>";
-        } else {
-            var aaa = "<li><a aria-label=\"Previous\"><span aria-hidden=\"true\">&raquo;</span></a></li><li><a>末页</a></li>";
-            addItem += "<li><a aria-label=\"Previous\"><span aria-hidden=\"true\">&raquo;</span></a></li><li><a onclick='toPage("+result.data.pageInfo.pages+")'>末页</a></li>";
-        }
-        pagination.append(addItem);
-    }
-</script>--%>
 </body>
 </html>
