@@ -1,7 +1,5 @@
 package cn.tqq.ssm.entity;
 
-import java.util.Date;
-
 /**
  * User: TianQiangQiang
  * Date: 2017/08/13 17:49
@@ -12,19 +10,17 @@ public class Employee {
     private String empName;
     private String gender;
     private String email;
-    private Date hiredate;
     private Integer deptId;
     private Department department;
 
     public Employee() {
     }
 
-    public Employee(Integer empId, String empName, String gender, String email, Date hiredate, Integer deptId, Department department) {
+    public Employee(Integer empId, String empName, String gender, String email, Integer deptId, Department department) {
         this.empId = empId;
         this.empName = empName;
         this.gender = gender;
         this.email = email;
-        this.hiredate = hiredate;
         this.deptId = deptId;
         this.department = department;
     }
@@ -61,14 +57,6 @@ public class Employee {
         this.email = email;
     }
 
-    public Date getHiredate() {
-        return hiredate;
-    }
-
-    public void setHiredate(Date hiredate) {
-        this.hiredate = hiredate;
-    }
-
     public Integer getDeptId() {
         return deptId;
     }
@@ -92,7 +80,6 @@ public class Employee {
                 ", empName='" + empName + '\'' +
                 ", gender='" + gender + '\'' +
                 ", email='" + email + '\'' +
-                ", hiredate=" + hiredate +
                 ", deptId=" + deptId +
                 ", department=" + department +
                 '}';

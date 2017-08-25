@@ -5,4 +5,4 @@
   Time: 13:09
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<jsp:forward page="/listAllEmp"/>
+<jsp:forward page="/employee/listAllEmp"/>

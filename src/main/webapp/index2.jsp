@@ -11,26 +11,12 @@
 <head>
     <title>All Employee</title>
     <link href="${ctx}/static/bootstrap/css/bootstrap.css" rel="stylesheet">
-    <link href="${ctx}/static/bootstrap/css/bootstrap-datetimepicker.css" rel="stylesheet">
     <script type="text/javascript" src="${ctx}/static/js/jquery/jquery-3.2.1.js"></script>
     <script src="${ctx}/static/bootstrap/js/bootstrap.js"></script>
-    <script src="${ctx}/static/bootstrap/js/bootstrap-datetimepicker.js"></script>
-    <script src="${ctx}/static/bootstrap/js/bootstrap-datetimepicker.zh-CN.js"></script>
     <script type="text/javascript">
+        var totalRecord;
         $(function () {
             toPage(1);
-
-            $(".form_datetime").datetimepicker({
-                weekStart: 0,
-                todayBtn: 'linked',
-                autoclose: true,
-                todayHighlight: true,
-                startView: 2,
-                minView: 'month',
-                language: 'zh-CN',
-                format: 'yyyy-mm-dd',
-                forceParse: 0
-            });
 
             $("#emp_add").on("click", function () {
 
@@ -50,6 +36,19 @@
                     keyboard: false
                 });
 
+            });
+
+            $("#save_btn").on("click", function () {
+                var emp = $("#empAddForm").serialize();
+                $.ajax({
+                    url: "${ctx}/employee/addEmployee",
+                    data: emp,
+                    type: "POST",
+                    success: function (result) {
+                        $("#empAdd").modal("hide");
+                        toPage(totalRecord);
+                    }
+                });
             });
 
         });
@@ -74,10 +73,9 @@
                 var empNameTd = $("<td></td>").append(item.empName);
                 var empGenderTd = $("<td></td>").append(item.gender);
                 var empEmailTd = $("<td></td>").append(item.email);
-                var empHiredateTd = $("<td></td>").append(item.hiredate);
                 var empDeptTd = $("<td></td>").append(item.department.deptName);
                 var operationTd = $("<td></td>").append('<button class="btn btn-primary btn-xs">编辑</button>&nbsp;<button class="btn btn-danger btn-xs">删除</button>');
-                $("<tr></tr>").append(empIdTd).append(empNameTd).append(empGenderTd).append(empEmailTd).append(empHiredateTd).append(empDeptTd).append(operationTd).appendTo($("#empData"));
+                $("<tr></tr>").append(empIdTd).append(empNameTd).append(empGenderTd).append(empEmailTd).append(empDeptTd).append(operationTd).appendTo($("#empData"));
             });
         }
 
@@ -86,6 +84,7 @@
             $("#currentPage").html(pageInfo.pageNum);
             $("#totalPage").html(pageInfo.pages);
             $("#totalRecord").html(pageInfo.total);
+            totalRecord = result.data.pageInfo.total;
         }
 
         function buildPageBar(result) {
@@ -124,7 +123,7 @@
                 <h4 class="modal-title" id="myModalLabel">Add Employee</h4>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal">
+                <form class="form-horizontal" id="empAddForm">
                     <div class="form-group">
                         <label for="inputEmpName" class="col-sm-2 control-label">Name</label>
                         <div class="col-sm-10">
@@ -150,16 +149,6 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">HireDate</label>
-                        <div class="col-sm-10">
-                            <div class="input-group date form_datetime">
-                                <input class="form-control" type="text" name="hiredate" readonly="readonly">
-                                <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
-                                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
                         <label for="inputDept" class="col-sm-2 control-label">Department</label>
                         <div class="col-sm-10">
                             <select class="form-control" id="inputDept" name="deptId"></select>
@@ -168,8 +157,8 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary">Save</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="save_btn">Save</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" id="close_btn">Close</button>
             </div>
         </div>
     </div>
@@ -197,7 +186,6 @@
                     <th>Name</th>
                     <th>Gender</th>
                     <th>Email</th>
-                    <th>Hiredate</th>
                     <th>Department</th>
                     <th>Operation</th>
                 </tr>

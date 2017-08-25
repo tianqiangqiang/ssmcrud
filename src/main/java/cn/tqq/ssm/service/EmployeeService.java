@@ -12,4 +12,6 @@ public interface EmployeeService {
 
     public abstract List<Employee> getAllEmployee();
 
+    public abstract void addEmployee(Employee employee);
+
 }

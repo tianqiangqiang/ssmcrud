@@ -9,7 +9,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -41,7 +40,7 @@ public class MapperTest {
     public void test3() {
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring/applicationContext.xml");
         EmployeeMapper employeeMapper = applicationContext.getBean(EmployeeMapper.class);
-        Employee employee = new Employee(null, "zhangsan", "男", "zhangsan@gmail.com", new java.util.Date(), 2, null);
+        Employee employee = new Employee(null, "zhangsan", "男", "zhangsan@gmail.com", 2, null);
         employeeMapper.addEmployee(employee);
     }
 
@@ -50,32 +49,32 @@ public class MapperTest {
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring/applicationContext.xml");
         EmployeeMapper employeeMapper = applicationContext.getBean(EmployeeMapper.class);
         List<Employee> employees = new ArrayList<>();
-        employees.add(new Employee(null, "aaa", "女", "aaa@qq.com", new Date(), 3, null));
-        employees.add(new Employee(null, "bbb", "女", "bbb@qq.com", new Date(), 1, null));
-        employees.add(new Employee(null, "ccc", "男", "ccc@163.com", new Date(), 2, null));
-        employees.add(new Employee(null, "ddd", "男", "ddd@qq.com", new Date(), 3, null));
-        employees.add(new Employee(null, "eee", "女", "eee@qq.com", new Date(), 1, null));
-        employees.add(new Employee(null, "fff", "女", "fff@qq.com", new Date(), 2, null));
-        employees.add(new Employee(null, "ggg", "男", "ggg@qq.com", new Date(), 3, null));
-        employees.add(new Employee(null, "hhh", "女", "hhh@qq.com", new Date(), 1, null));
-        employees.add(new Employee(null, "iii", "男", "iii@qq.com", new Date(), 2, null));
-        employees.add(new Employee(null, "jjj", "女", "jjj@qq.com", new Date(), 1, null));
-        employees.add(new Employee(null, "kkk", "男", "kkk@qq.com", new Date(), 2, null));
-        employees.add(new Employee(null, "lll", "女", "lll@qq.com", new Date(), 1, null));
-        employees.add(new Employee(null, "mmm", "男", "mmm@qq.com", new Date(), 3, null));
-        employees.add(new Employee(null, "nnn", "女", "nnn@qq.com", new Date(), 2, null));
-        employees.add(new Employee(null, "ooo", "男", "ooo@qq.com", new Date(), 1, null));
-        employees.add(new Employee(null, "ppp", "女", "ppp@qq.com", new Date(), 3, null));
-        employees.add(new Employee(null, "qqq", "女", "qqq@qq.com", new Date(), 1, null));
-        employees.add(new Employee(null, "rrr", "男", "rrr@qq.com", new Date(), 2, null));
-        employees.add(new Employee(null, "sss", "女", "sss@qq.com", new Date(), 3, null));
-        employees.add(new Employee(null, "ttt", "男", "ttt@qq.com", new Date(), 2, null));
-        employees.add(new Employee(null, "uuu", "女", "uuu@qq.com", new Date(), 1, null));
-        employees.add(new Employee(null, "vvv", "男", "vvv@qq.com", new Date(), 3, null));
-        employees.add(new Employee(null, "www", "女", "www@qq.com", new Date(), 1, null));
-        employees.add(new Employee(null, "xxx", "男", "xxx@qq.com", new Date(), 2, null));
-        employees.add(new Employee(null, "yyy", "男", "yyy@qq.com", new Date(), 3, null));
-        employees.add(new Employee(null, "zzz", "女", "zzz@qq.com", new Date(), 2, null));
+        employees.add(new Employee(null, "aaa", "女", "aaa@qq.com", 3, null));
+        employees.add(new Employee(null, "bbb", "女", "bbb@qq.com", 1, null));
+        employees.add(new Employee(null, "ccc", "男", "ccc@163.com" , 2, null));
+        employees.add(new Employee(null, "ddd", "男", "ddd@qq.com",  3, null));
+        employees.add(new Employee(null, "eee", "女", "eee@qq.com",  1, null));
+        employees.add(new Employee(null, "fff", "女", "fff@qq.com",  2, null));
+        employees.add(new Employee(null, "ggg", "男", "ggg@qq.com",  3, null));
+        employees.add(new Employee(null, "hhh", "女", "hhh@qq.com",  1, null));
+        employees.add(new Employee(null, "iii", "男", "iii@qq.com",  2, null));
+        employees.add(new Employee(null, "jjj", "女", "jjj@qq.com",  1, null));
+        employees.add(new Employee(null, "kkk", "男", "kkk@qq.com",  2, null));
+        employees.add(new Employee(null, "lll", "女", "lll@qq.com",  1, null));
+        employees.add(new Employee(null, "mmm", "男", "mmm@qq.com",  3, null));
+        employees.add(new Employee(null, "nnn", "女", "nnn@qq.com",  2, null));
+        employees.add(new Employee(null, "ooo", "男", "ooo@qq.com",  1, null));
+        employees.add(new Employee(null, "ppp", "女", "ppp@qq.com",  3, null));
+        employees.add(new Employee(null, "qqq", "女", "qqq@qq.com",  1, null));
+        employees.add(new Employee(null, "rrr", "男", "rrr@qq.com", 2, null));
+        employees.add(new Employee(null, "sss", "女", "sss@qq.com", 3, null));
+        employees.add(new Employee(null, "ttt", "男", "ttt@qq.com", 2, null));
+        employees.add(new Employee(null, "uuu", "女", "uuu@qq.com", 1, null));
+        employees.add(new Employee(null, "vvv", "男", "vvv@qq.com", 3, null));
+        employees.add(new Employee(null, "www", "女", "www@qq.com", 1, null));
+        employees.add(new Employee(null, "xxx", "男", "xxx@qq.com", 2, null));
+        employees.add(new Employee(null, "yyy", "男", "yyy@qq.com", 3, null));
+        employees.add(new Employee(null, "zzz", "女", "zzz@qq.com", 2, null));
         employeeMapper.batchAddEmployee(employees);
     }
 
@@ -83,7 +82,7 @@ public class MapperTest {
     public void test5() {
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring/applicationContext.xml");
         EmployeeMapper employeeMapper = applicationContext.getBean(EmployeeMapper.class);
-        Employee employee = new Employee(4, "niuqi", "男", "niuqi@qq.com", new Date(), 3, null);
+        Employee employee = new Employee(4, "niuqi", "男", "niuqi@qq.com",  3, null);
         employeeMapper.updateEmployee(employee);
     }
 

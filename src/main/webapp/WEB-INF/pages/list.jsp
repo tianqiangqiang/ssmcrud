@@ -36,7 +36,6 @@
                     <th>Name</th>
                     <th>Gender</th>
                     <th>Email</th>
-                    <th>Hiredate</th>
                     <th>Department</th>
                     <th>Operation</th>
                 </tr>
@@ -46,7 +45,6 @@
                         <td>${emp.empName}</td>
                         <td>${emp.gender}</td>
                         <td>${emp.email}</td>
-                        <td>${emp.hiredate}</td>
                         <td>${emp.department.deptName}</td>
                         <td>
                             <button class="btn btn-primary btn-xs">编辑</button>

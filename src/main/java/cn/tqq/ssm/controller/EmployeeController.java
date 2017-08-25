@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -41,6 +42,13 @@ public class EmployeeController {
         PageInfo<Employee> pageInfo = new PageInfo<>(employees, 5);
         model.addAttribute("pageInfo", pageInfo);
         return "list";
+    }
+
+    @RequestMapping(value = "/addEmployee", method = RequestMethod.POST)
+    @ResponseBody
+    public GenericInfo saveEmployee(Employee employee) {
+        employeeService.addEmployee(employee);
+        return GenericInfo.success();
     }
 
 }
