@@ -35,7 +35,22 @@
     </delete>
 
     <update id="updateEmployee" parameterType="Employee">
-        update employee set emp_name = #{empName},gender=#{gender},email=#{email},dept_id=#{deptId} where emp_id = #{empId}
+        update employee
+        <set>
+            <if test='empName!=null and empName!=""'>
+                emp_name = #{empName},
+            </if>
+            <if test='gender!=null and gender!=""'>
+                gender=#{gender},
+            </if>
+            <if test='email!=null and email!=""'>
+                email=#{email},
+            </if>
+            <if test='deptId!=null'>
+                dept_id=#{deptId}
+            </if>
+        </set>
+        where emp_id = #{empId}
     </update>
 
     <resultMap id="empMap" type="Employee">

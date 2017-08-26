@@ -17,4 +17,6 @@ public interface EmployeeService {
     public abstract boolean validateEmpName(String empName);
 
     public abstract Employee getEmployeeById(Integer id);
+
+    public abstract void updateEmp(Employee employee);
 }

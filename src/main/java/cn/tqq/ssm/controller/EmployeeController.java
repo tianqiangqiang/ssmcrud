@@ -74,7 +74,14 @@ public class EmployeeController {
     @ResponseBody
     public GenericInfo getEmployeeById(@PathVariable(value = "id") Integer id) {
         Employee employee = employeeService.getEmployeeById(id);
-        return GenericInfo.success().add("employee",employee);
+        return GenericInfo.success().add("employee", employee);
+    }
+
+    @RequestMapping(value = "/employee/{empId}", method = RequestMethod.PUT)
+    @ResponseBody
+    public GenericInfo updateEmp(Employee employee) {
+        employeeService.updateEmp(employee);
+        return GenericInfo.success();
     }
 
 }

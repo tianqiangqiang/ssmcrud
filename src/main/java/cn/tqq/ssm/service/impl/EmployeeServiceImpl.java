@@ -43,4 +43,9 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employee;
     }
 
+    @Override
+    public void updateEmp(Employee employee) {
+        employeeMapper.updateEmployee(employee);
+    }
+
 }

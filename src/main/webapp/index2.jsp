@@ -14,7 +14,7 @@
     <script type="text/javascript" src="${ctx}/static/js/jquery/jquery-3.2.1.js"></script>
     <script src="${ctx}/static/bootstrap/js/bootstrap.js"></script>
     <script type="text/javascript">
-        var totalRecord;
+        var totalRecord, currentPage;
         $(function () {
             toPage(1);
 
@@ -34,26 +34,25 @@
             });
 
             $(document).on("click", ".editEmp", function () {
-                /*$("#empAddForm")[0].reset();
-                $("#inputEmpName").parent().removeClass("has-success has-error");
-                $("#inputEmpName").next("span").text("");
-                $("#inputEmail").parent().removeClass("has-success has-error");
-                $("#inputEmail").next("span").text("");*/
-
                 $.ajax({
-                    url: "${ctx}/employee/"+$(this).attr("editEmpId"),
+                    url: "${ctx}/employee/" + $(this).attr("editEmpId"),
                     type: "GET",
                     success: function (result) {
-                        alert(result);
+                        $("#input_update_empName").html(result.data.employee.empName);
+                        $("#inputUpdateEmail").val(result.data.employee.email);
+                        $("#empUpdate input[name=gender]").val([result.data.employee.gender]);
+                        $("#empUpdate select").val([result.data.employee.department.deptId]);
                     }
                 });
 
-                /*getAllDept("#inputUpdateDept");
+                getAllDept("#inputUpdateDept");
 
                 $("#empUpdate").modal({
                     backdrop: 'static',
                     keyboard: false
-                });*/
+                });
+
+                $("#update_btn").attr("editEmpId", $(this).attr("editEmpId"));
             });
 
             $("#save_btn").on("click", function () {
@@ -83,6 +82,27 @@
                         }
                     }
                 });
+            });
+
+            $("#update_btn").on("click", function () {
+                var emp_email = $("#inputUpdateEmail").val().trim();
+                var email_regex = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
+                if (emp_email.match(email_regex) == null) {
+                    showValidateMessage("#inputUpdateEmail", "error", "请检查邮箱格式!");
+                    return false;
+                } else {
+                    showValidateMessage("#inputUpdateEmail", "success", "");
+                    var emp = $("#empUpdateForm").serialize();
+                    $.ajax({
+                        url: "${ctx}/employee/" + $(this).attr("editEmpId"),
+                        type: "POST",
+                        data: emp,
+                        success: function (result) {
+                            toPage(currentPage);
+                            $("#empUpdate").modal("hide");
+                        }
+                    });
+                }
             });
         });
 
@@ -131,6 +151,7 @@
             $("#totalPage").html(pageInfo.pages);
             $("#totalRecord").html(pageInfo.total);
             totalRecord = result.data.pageInfo.total;
+            currentPage = pageInfo.pageNum;
         }
 
         function buildPageBar(result) {
@@ -269,10 +290,11 @@
             </div>
             <div class="modal-body">
                 <form class="form-horizontal" id="empUpdateForm">
+                    <input type="hidden" name="_method" value="PUT">
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Name</label>
                         <div class="col-sm-10">
-                            <p class="form-control-static" id="input_update_empName">Name</p>
+                            <p class="form-control-static" id="input_update_empName"></p>
                         </div>
                     </div>
                     <div class="form-group">
