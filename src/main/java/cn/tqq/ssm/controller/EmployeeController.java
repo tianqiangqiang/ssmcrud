@@ -10,10 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.HashMap;
@@ -71,6 +68,13 @@ public class EmployeeController {
             return GenericInfo.fail();
         }
         return GenericInfo.success();
+    }
+
+    @RequestMapping(value = "/employee/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public GenericInfo getEmployeeById(@PathVariable(value = "id") Integer id) {
+        Employee employee = employeeService.getEmployeeById(id);
+        return GenericInfo.success().add("employee",employee);
     }
 
 }

@@ -25,21 +25,35 @@
                 $("#inputEmail").parent().removeClass("has-success has-error");
                 $("#inputEmail").next("span").text("");
 
-                $.ajax({
-                    url: "${ctx}/department/getAllDept",
-                    type: "GET",
-                    success: function (result) {
-                        $("#inputDept").empty();
-                        $.each(result.data.departments, function (index, item) {
-                            $("#inputDept").append("<option value='" + item.deptId + "'>" + item.deptName + "</option>");
-                        });
-                    }
-                });
+                getAllDept("#inputDept");
 
                 $("#empAdd").modal({
                     backdrop: 'static',
                     keyboard: false
                 });
+            });
+
+            $(document).on("click", ".editEmp", function () {
+                /*$("#empAddForm")[0].reset();
+                $("#inputEmpName").parent().removeClass("has-success has-error");
+                $("#inputEmpName").next("span").text("");
+                $("#inputEmail").parent().removeClass("has-success has-error");
+                $("#inputEmail").next("span").text("");*/
+
+                $.ajax({
+                    url: "${ctx}/employee/"+$(this).attr("editEmpId"),
+                    type: "GET",
+                    success: function (result) {
+                        alert(result);
+                    }
+                });
+
+                /*getAllDept("#inputUpdateDept");
+
+                $("#empUpdate").modal({
+                    backdrop: 'static',
+                    keyboard: false
+                });*/
             });
 
             $("#save_btn").on("click", function () {
@@ -70,8 +84,20 @@
                     }
                 });
             });
-
         });
+
+        function getAllDept(element) {
+            $(element).empty();
+            $.ajax({
+                url: "${ctx}/department/getAllDept",
+                type: "GET",
+                success: function (result) {
+                    $.each(result.data.departments, function (index, item) {
+                        $(element).append("<option value='" + item.deptId + "'>" + item.deptName + "</option>");
+                    });
+                }
+            });
+        }
 
         function toPage(pageNumber) {
             $.ajax({
@@ -94,7 +120,7 @@
                 var empGenderTd = $("<td></td>").append(item.gender);
                 var empEmailTd = $("<td></td>").append(item.email);
                 var empDeptTd = $("<td></td>").append(item.department.deptName);
-                var operationTd = $("<td></td>").append('<button class="btn btn-primary btn-xs">编辑</button>&nbsp;<button class="btn btn-danger btn-xs">删除</button>');
+                var operationTd = $("<td></td>").append("<button class='btn btn-primary btn-xs editEmp' editEmpId='" + item.empId + "'>编辑</button>&nbsp;<button class='btn btn-danger btn-xs deleteEmp'>删除</button>");
                 $("<tr></tr>").append(empIdTd).append(empNameTd).append(empGenderTd).append(empEmailTd).append(empDeptTd).append(operationTd).appendTo($("#empData"));
             });
         }
@@ -227,6 +253,58 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" id="save_btn">Save</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal" id="close_btn">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%--员工修改--%>
+<div class="modal fade" id="empUpdate" tabindex="-1" role="dialog" aria-labelledby="myModalLabelTwo">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabelTwo">Add Employee</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="empUpdateForm">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Name</label>
+                        <div class="col-sm-10">
+                            <p class="form-control-static" id="input_update_empName">Name</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Gender</label>
+                        <div class="col-sm-10">
+                            <label class="radio-inline">
+                                <input type="radio" name="gender" id="updateGenderRadio1" value="男" checked="checked"> 男
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="gender" id="updateGenderRadio2" value="女"> 女
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputEmail" class="col-sm-2 control-label">Email</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="email" class="form-control" id="inputUpdateEmail"
+                                   placeholder="Email">
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputDept" class="col-sm-2 control-label">Department</label>
+                        <div class="col-sm-10">
+                            <select class="form-control" id="inputUpdateDept" name="deptId"></select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="update_btn">Update</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" id="close_update_btn">Close</button>
             </div>
         </div>
     </div>

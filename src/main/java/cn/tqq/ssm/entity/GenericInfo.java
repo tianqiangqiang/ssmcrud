@@ -1,6 +1,5 @@
 package cn.tqq.ssm.entity;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,9 +8,7 @@ import java.util.Map;
  * Date: 2017/08/20 15:09
  * Desc: 通用交互类
  */
-public class GenericInfo implements Serializable {
-
-    private static final long serialVersionUID = 4406463525024651558L;
+public class GenericInfo {
 
     //状态码
     private int statusCode;
