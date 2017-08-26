@@ -13,6 +13,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -81,6 +82,22 @@ public class EmployeeController {
     @ResponseBody
     public GenericInfo updateEmp(Employee employee) {
         employeeService.updateEmp(employee);
+        return GenericInfo.success();
+    }
+
+    @RequestMapping(value = "/employee/{ids}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public GenericInfo deleteEmpById(@PathVariable(value = "ids") String ids) {
+        if (ids.contains("-")) {
+            List<Integer> list = new ArrayList<>();
+            String[] idArray = ids.split("-");
+            for (String id : idArray) {
+                list.add(Integer.parseInt(id));
+            }
+            employeeService.batchDeleteEmp(list);
+        } else {
+            employeeService.deleteEmpById(Integer.parseInt(ids));
+        }
         return GenericInfo.success();
     }
 

@@ -19,4 +19,8 @@ public interface EmployeeService {
     public abstract Employee getEmployeeById(Integer id);
 
     public abstract void updateEmp(Employee employee);
+
+    public abstract void deleteEmpById(Integer id);
+
+    public abstract void batchDeleteEmp(List<Integer> list);
 }

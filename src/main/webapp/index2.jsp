@@ -55,6 +55,14 @@
                 $("#update_btn").attr("editEmpId", $(this).attr("editEmpId"));
             });
 
+            $(document).on("click", ".deleteEmp", function () {
+                var empName = $(this).parents("tr").find("td:eq(2)").html();
+                var empId = $(this).parents("tr").find("td:eq(1)").html();
+                if (confirm("确认删除员工" + empName + "吗?")) {
+                    delete_emp(empId)
+                }
+            });
+
             $("#save_btn").on("click", function () {
                 if (!validate_addEmployee()) {
                     return false;
@@ -104,7 +112,44 @@
                     });
                 }
             });
+
+            $("#checkAll").on("click", function () {
+                $(".checkItem").prop("checked", $("#checkAll").prop("checked"));
+            });
+
+            $(document).on("click", ".checkItem", function () {
+                if ($(".checkItem:checked").length == $(".checkItem").length) {
+                    $("#checkAll").prop("checked", true);
+                } else {
+                    $("#checkAll").prop("checked", false);
+                }
+            });
+
+            $("#emp_delete").on("click", function () {
+                if ($(".checkItem:checked").length == 0) {
+                    alert("请勾选要删除的员工!");
+                } else {
+                    var ids = "";
+                    $.each($(".checkItem:checked"), function (index, item) {
+                        ids += $(this).parents("tr").find("td:eq(1)").html() + "-";
+                    });
+                    ids = ids.substring(0, ids.length - 1);
+                    if (confirm("确认要删除选中的员工吗?")) {
+                        delete_emp(ids);
+                    }
+                }
+            });
         });
+
+        function delete_emp(ids) {
+            $.ajax({
+                url: "${ctx}/employee/" + ids,
+                type: "DELETE",
+                success: function (result) {
+                    toPage(currentPage);
+                }
+            });
+        }
 
         function getAllDept(element) {
             $(element).empty();
@@ -135,13 +180,14 @@
             $("#empData").empty();
             var emps = result.data.pageInfo.list;
             $.each(emps, function (index, item) {
+                var checkBox = $("<td></td>").append("<input type=\"checkbox\" class='checkItem'>");
                 var empIdTd = $("<td></td>").append(item.empId);
                 var empNameTd = $("<td></td>").append(item.empName);
                 var empGenderTd = $("<td></td>").append(item.gender);
                 var empEmailTd = $("<td></td>").append(item.email);
                 var empDeptTd = $("<td></td>").append(item.department.deptName);
                 var operationTd = $("<td></td>").append("<button class='btn btn-primary btn-xs editEmp' editEmpId='" + item.empId + "'>编辑</button>&nbsp;<button class='btn btn-danger btn-xs deleteEmp'>删除</button>");
-                $("<tr></tr>").append(empIdTd).append(empNameTd).append(empGenderTd).append(empEmailTd).append(empDeptTd).append(operationTd).appendTo($("#empData"));
+                $("<tr></tr>").append(checkBox).append(empIdTd).append(empNameTd).append(empGenderTd).append(empEmailTd).append(empDeptTd).append(operationTd).appendTo($("#empData"));
             });
         }
 
@@ -350,6 +396,9 @@
             <table class="table table-hover">
                 <thead>
                 <tr>
+                    <th>
+                        <input type="checkbox" id="checkAll">
+                    </th>
                     <th>Id</th>
                     <th>Name</th>
                     <th>Gender</th>
