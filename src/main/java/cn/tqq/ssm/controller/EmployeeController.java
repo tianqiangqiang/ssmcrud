@@ -8,12 +8,17 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * User: TianQiangQiang
@@ -45,7 +50,15 @@ public class EmployeeController {
 
     @RequestMapping(value = "/employee", method = RequestMethod.POST)
     @ResponseBody
-    public GenericInfo saveEmployee(Employee employee) {
+    public GenericInfo saveEmployee(@Valid Employee employee, BindingResult result) {
+        if (result.hasErrors()) {
+            Map<String, Object> map = new HashMap<>();
+            List<FieldError> fieldErrors = result.getFieldErrors();
+            for (FieldError fieldError : fieldErrors) {
+                map.put(fieldError.getField(), fieldError.getDefaultMessage());
+            }
+            return GenericInfo.fail().add("map", map);
+        }
         employeeService.addEmployee(employee);
         return GenericInfo.success();
     }

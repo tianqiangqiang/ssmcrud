@@ -1,5 +1,7 @@
 package cn.tqq.ssm.entity;
 
+import javax.validation.constraints.Pattern;
+
 /**
  * User: TianQiangQiang
  * Date: 2017/08/13 17:49
@@ -7,8 +9,10 @@ package cn.tqq.ssm.entity;
 public class Employee {
 
     private Integer empId;
+    @Pattern(regexp = "^[\\u4E00-\\u9FA5A-Za-z]{2,10}$", message = "用户名为3-10位中文或英文!")
     private String empName;
     private String gender;
+    @Pattern(regexp = "^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$", message = "请检查邮箱格式!")
     private String email;
     private Integer deptId;
     private Department department;

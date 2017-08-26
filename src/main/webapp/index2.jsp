@@ -52,8 +52,21 @@
                     data: emp,
                     type: "POST",
                     success: function (result) {
-                        $("#empAdd").modal("hide");
-                        toPage(totalRecord);
+                        if (result.statusCode == 1) {
+                            $("#empAdd").modal("hide");
+                            toPage(totalRecord);
+                        } else {
+                            if (result.data.map.empName != undefined) {
+                                showValidateMessage("#inputEmpName", "error", result.data.map.empName);
+                            } else {
+                                showValidateMessage("#inputEmpName", "success", "");
+                            }
+                            if (result.data.map.email != undefined) {
+                                showValidateMessage("#inputEmail", "error", result.data.map.email);
+                            } else {
+                                showValidateMessage("#inputEmail", "success", "");
+                            }
+                        }
                     }
                 });
             });
