@@ -72,9 +72,9 @@
                             </li>
                         </c:when>
                         <c:otherwise>
-                            <li><a href="${ctx}/employee/listAllEmp?pageNumber=1">首页</a></li>
+                            <li><a href="${ctx}/listAllEmp?pageNumber=1">首页</a></li>
                             <li>
-                                <a href="${ctx}/employee/listAllEmp?pageNumber=${pageInfo.pageNum-1}" aria-label="Previous">
+                                <a href="${ctx}/listAllEmp?pageNumber=${pageInfo.pageNum-1}" aria-label="Previous">
                                     <span aria-hidden="true">&laquo;</span>
                                 </a>
                             </li>
@@ -88,7 +88,7 @@
                                 </li>
                             </c:when>
                             <c:otherwise>
-                                <li><a href="${ctx}/employee/listAllEmp?pageNumber=${npn}">${npn}</a></li>
+                                <li><a href="${ctx}/listAllEmp?pageNumber=${npn}">${npn}</a></li>
                             </c:otherwise>
                         </c:choose>
                     </c:forEach>
@@ -103,11 +103,11 @@
                         </c:when>
                         <c:otherwise>
                             <li>
-                                <a href="${ctx}/employee/listAllEmp?pageNumber=${pageInfo.pageNum+1}" aria-label="Previous">
+                                <a href="${ctx}/listAllEmp?pageNumber=${pageInfo.pageNum+1}" aria-label="Previous">
                                     <span aria-hidden="true">&raquo;</span>
                                 </a>
                             </li>
-                            <li><a href="${ctx}/employee/listAllEmp?pageNumber=${pageInfo.pages}">末页</a></li>
+                            <li><a href="${ctx}/listAllEmp?pageNumber=${pageInfo.pages}">末页</a></li>
                         </c:otherwise>
                     </c:choose>
                 </ul>

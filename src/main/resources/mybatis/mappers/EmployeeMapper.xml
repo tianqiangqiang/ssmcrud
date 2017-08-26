@@ -69,4 +69,8 @@
       SELECT e.emp_id,e.emp_name,e.gender,e.email,e.dept_id,d.dept_id,d.dept_name FROM employee e LEFT JOIN department d ON e.dept_id = d.dept_id
     </select>
 
+    <select id="getEmployeeByName" resultType="cn.tqq.ssm.entity.Employee" parameterType="String">
+      SELECT * FROM employee WHERE emp_name = #{empName}
+    </select>
+
 </mapper>

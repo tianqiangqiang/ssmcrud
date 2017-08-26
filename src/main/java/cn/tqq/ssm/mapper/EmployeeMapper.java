@@ -26,6 +26,8 @@ public interface EmployeeMapper {
 
     public abstract Employee getEmployeeById(Integer id);
 
+    public abstract Employee getEmployeeByName(String empName);
+
     public abstract List<Employee> getEmployeeByDeptId(Integer deptId);
 
     public abstract List<Employee> getAllEmployee();

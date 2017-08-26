@@ -31,4 +31,10 @@ public class EmployeeServiceImpl implements EmployeeService {
         employeeMapper.addEmployee(employee);
     }
 
+    @Override
+    public boolean validateEmpName(String empName) {
+        Employee employee = employeeMapper.getEmployeeByName(empName);
+        return employee == null;
+    }
+
 }

@@ -39,7 +39,7 @@ public class MVCTest {
 
     @Test
     public void testPage() throws Exception {
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/employee/listAllEmp").param("pageNumber", "1")).andReturn();
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/listAllEmp").param("pageNumber", "1")).andReturn();
         MockHttpServletRequest request = result.getRequest();
         PageInfo<Employee> pageInfo = (PageInfo<Employee>) request.getAttribute("pageInfo");
         System.out.println("当前页码:" + pageInfo.getPageNum());

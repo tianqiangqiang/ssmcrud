@@ -19,6 +19,11 @@
             toPage(1);
 
             $("#emp_add").on("click", function () {
+                $("#empAddForm")[0].reset();
+                $("#inputEmpName").parent().removeClass("has-success has-error");
+                $("#inputEmpName").next("span").text("");
+                $("#inputEmail").parent().removeClass("has-success has-error");
+                $("#inputEmail").next("span").text("");
 
                 $.ajax({
                     url: "${ctx}/department/getAllDept",
@@ -35,13 +40,15 @@
                     backdrop: 'static',
                     keyboard: false
                 });
-
             });
 
             $("#save_btn").on("click", function () {
+                if (!validate_addEmployee()) {
+                    return false;
+                }
                 var emp = $("#empAddForm").serialize();
                 $.ajax({
-                    url: "${ctx}/employee/addEmployee",
+                    url: "${ctx}/employee",
                     data: emp,
                     type: "POST",
                     success: function (result) {
@@ -55,7 +62,7 @@
 
         function toPage(pageNumber) {
             $.ajax({
-                url: "${ctx}/employee/getAllEmpWithJson?pageNumber=" + pageNumber,
+                url: "${ctx}/getAllEmpWithJson?pageNumber=" + pageNumber,
                 type: "GET",
                 success: function (result) {
                     buildEmpTable(result);
@@ -110,6 +117,52 @@
             }
             pagination.append(addItem);
         }
+
+        function validate_addEmployee() {
+            var emp_name = $("#inputEmpName").val().trim();
+            var emp_email = $("#inputEmail").val().trim();
+            var name_regex = /^[\u4E00-\u9FA5A-Za-z]{2,10}$/;
+            var email_regex = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
+            if (emp_name.match(name_regex) == null) {
+                showValidateMessage("#inputEmpName", "error", "用户名为3-10位中文或英文!");
+                return false;
+            } else {
+                var flag = false;
+                $.ajax({
+                    url: "${ctx}/validateEmpName?empName=" + emp_name,
+                    type: "POST",
+                    async: false,
+                    success: function (result) {
+                        if (result.statusCode == 1) {
+                            flag = true;
+                        }
+                    }
+                });
+                if (!flag) {
+                    showValidateMessage("#inputEmpName", "error", "用户名已存在!");
+                    return false;
+                }
+                showValidateMessage("#inputEmpName", "success", "");
+            }
+            if (emp_email.match(email_regex) == null) {
+                showValidateMessage("#inputEmail", "error", "请检查邮箱格式!");
+                return false;
+            } else {
+                showValidateMessage("#inputEmail", "success", "");
+            }
+            return true;
+        }
+
+        function showValidateMessage(element, status, message) {
+            $(element).parent().removeClass("has-success has-error");
+            if (status == "success") {
+                $(element).parent().addClass("has-success");
+                $(element).next("span").text(message);
+            } else {
+                $(element).parent().addClass("has-error");
+                $(element).next("span").text(message);
+            }
+        }
     </script>
 </head>
 <body>
@@ -129,6 +182,7 @@
                         <div class="col-sm-10">
                             <input type="text" name="empName" class="form-control" id="inputEmpName"
                                    placeholder="EmpName">
+                            <span class="help-block"></span>
                         </div>
                     </div>
                     <div class="form-group">
@@ -146,6 +200,7 @@
                         <label for="inputEmail" class="col-sm-2 control-label">Email</label>
                         <div class="col-sm-10">
                             <input type="text" name="email" class="form-control" id="inputEmail" placeholder="Email">
+                            <span class="help-block"></span>
                         </div>
                     </div>
                     <div class="form-group">

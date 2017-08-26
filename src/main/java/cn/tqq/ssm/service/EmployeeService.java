@@ -14,4 +14,5 @@ public interface EmployeeService {
 
     public abstract void addEmployee(Employee employee);
 
+    public abstract boolean validateEmpName(String empName);
 }

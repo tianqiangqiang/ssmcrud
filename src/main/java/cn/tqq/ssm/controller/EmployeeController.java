@@ -20,7 +20,6 @@ import java.util.List;
  * Date: 2017/08/15 19:47
  */
 @Controller
-@RequestMapping(value = "/employee")
 public class EmployeeController {
 
     @Autowired
@@ -44,10 +43,20 @@ public class EmployeeController {
         return "list";
     }
 
-    @RequestMapping(value = "/addEmployee", method = RequestMethod.POST)
+    @RequestMapping(value = "/employee", method = RequestMethod.POST)
     @ResponseBody
     public GenericInfo saveEmployee(Employee employee) {
         employeeService.addEmployee(employee);
+        return GenericInfo.success();
+    }
+
+    @RequestMapping(value = "/validateEmpName")
+    @ResponseBody
+    public GenericInfo validateEmpName(String empName) {
+        boolean result = employeeService.validateEmpName(empName);
+        if (result == false) {
+            return GenericInfo.fail();
+        }
         return GenericInfo.success();
     }
 
